@@ -112,7 +112,43 @@ The probability that the adversary wins should be negligible for a valid digital
   \item The identities are called addresses in bitcoin.
   \item Privacy concern: addresses are not directly connected to real-word identities. But observers can link together an address's activities over time and make inferences.
 \end{itemize}
-\section{A Simple Cryptocurrency}
+\section{Simple Cryptocurrencies}
+\subsection{GoofyCoin}
+\begin{center}
+  \includegraphics[width=0.5\textwidth]{goofy.png}
+\end{center}
+\begin{itemize}
+\item Goofy can create new coins, and new coins belong to him. A new coin is represented by a data structure containing a unique coin ID and Goofy's signature by $pk_{Goofy}$.
+\item Anyone owning a coin can spend it, i.e. pass it on to someone else. A new data structure is added to the chain, with a hash pointer pointing to the previous block, and a signature of the new owner.
+\end{itemize}
+The validity of the coin can be checked by following the chain and checking all the signatures along the way. GoofyCoin suffers from double-spending attack (one coin can be spent twice), which is the main design challenge when designing crypto-currencies.
+\subsection{ScroogeCoin}
+ScroogeCoin solves the problem of double spending. Scrooge publishes a history of all transactions (a block chain, signed by Scrooge). Each block contains only one transaction. In practice, a block can contain multiple transactions as an optimization. 
+\begin{center}
+  \includegraphics[width=0.8\textwidth]{scrooge.png}
+\end{center}
+\subsubsection{Transactions}
+\begin{itemize}
+  \item CreateCoins transaction creates new coins. Multiple coins can be created in the same transaction, each with a num, a value and a recipient.
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{scrooge_create.png}
+  \end{center}
+  \item PayCoins transaction consumes (and destroys) some coins, and creates new coins of the same total value.
+  \begin{center}
+    \includegraphics[width=0.5\textwidth]{scrooge_pay.png}
+  \end{center}
+  Such a transaction is valid if and only if:
+  \begin{itemize}
+    \item The consumed coins are valid (i.e. have been actually created)
+    \item The consumed coins have not been consumed (no double spending)
+    \item Total value out = total value in
+    \item The transaction is signed by owners of all consumed coins
+  \end{itemize}
+\end{itemize}
+\subsubsection{Immutable Coins}
+Coins cannot be transferred, subdivided or combined. But the same effect can be achieved by using transactions.
+\subsubsection{Crucial Question}
+Can we descroogify the currency, i.e. operate without any central, trusted party?
 \ifx\PREAMBLE\undefined
 \end{document}
 \fi
